@@ -27,7 +27,7 @@
         android:textColor="@color/black"
         android:textSize="64dp" />
 
-    "
+    
 
     <LinearLayout
         android:id="@+id/buttons_Layout"
