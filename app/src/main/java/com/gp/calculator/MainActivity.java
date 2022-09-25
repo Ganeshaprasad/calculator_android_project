@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     String getResult(String data) {
         try {
-            Context context = Context.enter();
+            org.mozilla.javascript.Context context = Context.enter();
             context.setOptimizationLevel(-1);
             Scriptable scriptable = context.initSafeStandardObjects();
             String finalResult = context.evaluateString(scriptable, data, "Javascript", 1, null).toString();
