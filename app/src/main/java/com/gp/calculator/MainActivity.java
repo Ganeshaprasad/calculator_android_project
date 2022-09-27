@@ -3,20 +3,18 @@ package com.gp.calculator;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class MainActivity extends AppCompatActivity {
+    String working = "";
     TextView resultTv, solutionTv;
-    MaterialButton buttonC, buttonBrackOpen, buttonBrackClose, buttonDivide, buttonSeven, buttonSix,
-            buttonEight, buttonNine, buttonFive, buttonFour, buttonThree, buttonTwo, buttonOne, buttonAc,
-            buttonZero, buttonDot, buttonEqual, buttonMultiply, buttonPlus, buttonMinus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,75 +22,108 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         resultTv = findViewById(R.id.result_tv);
         solutionTv = findViewById(R.id.solution_tv);
-
-        assignId(buttonC, R.id.button_c);
-        assignId(buttonBrackOpen, R.id.button_openbracket);
-        assignId(buttonBrackClose, R.id.button_closedbracket);
-        assignId(buttonOne, R.id.button_1);
-        assignId(buttonTwo, R.id.button_2);
-        assignId(buttonTwo, R.id.button_3);
-        assignId(buttonFour, R.id.button_4);
-        assignId(buttonFive, R.id.button_5);
-        assignId(buttonSix, R.id.button_6);
-        assignId(buttonSeven, R.id.button_7);
-        assignId(buttonEight, R.id.button_8);
-        assignId(buttonNine, R.id.button_9);
-        assignId(buttonZero, R.id.button_zero);
-        assignId(buttonDivide, R.id.button_divide);
-        assignId(buttonDot, R.id.button_dot);
-        assignId(buttonMultiply, R.id.button_multiply);
-        assignId(buttonPlus, R.id.button_plus);
-        assignId(buttonAc, R.id.button_ac);
-        assignId(buttonMinus, R.id.button_minus);
-        assignId(buttonEqual, R.id.button_equal);
     }
 
-    void assignId(MaterialButton btn, int id) {
-        btn = findViewById(id);
-        btn.setOnClickListener(this);
+    private void setWorking(String enteredValue) {
+        working = working + enteredValue;
+        solutionTv.setText(working);
     }
 
-    @Override
-    public void onClick(View view) {
-        MaterialButton button = (MaterialButton) view;
-        String buttonText = button.getText().toString();
-        String dataToCalculate = solutionTv.getText().toString();
-        if (buttonText.equals("AC")) {
-            solutionTv.setText("");
-            solutionTv.setText("0");
-            return;
-        }
-        if (buttonText.equals("=")) {
-            solutionTv.setText(resultTv.getText());
-            return;
-        }
-        if (buttonText.equals("C")) {
-            dataToCalculate = dataToCalculate.substring(0, dataToCalculate.length() - 1);
-        } else {
-            dataToCalculate = dataToCalculate + buttonText;
-        }
-
-        solutionTv.setText(dataToCalculate);
-        String finalResult = getResult(dataToCalculate);
-        if (!finalResult.equals("Err")) {
-            resultTv.setText(finalResult);
-        }
+    public void onClickOne(View view) {
+        setWorking("1");
     }
 
-    String getResult(String data) {
+    public void onClickTwo(View view) {
+        setWorking("2");
+    }
+
+    public void onClickThree(View view) {
+        setWorking("3");
+    }
+
+    public void onClickFour(View view) {
+        setWorking("4");
+    }
+
+    public void onClickFive(View view) {
+        setWorking("5");
+    }
+
+    public void onClickSix(View view) {
+        setWorking("6");
+    }
+
+    public void onClickSeven(View view) {
+        setWorking("7");
+    }
+
+    public void onClickEight(View view) {
+        setWorking("8");
+    }
+
+    public void onClickNine(View view) {
+        setWorking("9");
+    }
+
+    public void onClickZero(View view) {
+        setWorking("0");
+    }
+
+    public void onClickEqual(View view) {
+        Double result = null;
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
         try {
-            Context context = Context.enter();
-            context.setOptimizationLevel(-1);
-            Scriptable scriptable = context.initSafeStandardObjects();
-            String finalResult = context.evaluateString(scriptable, data, "Javascript", 1, null).toString();
-            if(finalResult.endsWith(".0"))
-            {
-                finalResult=finalResult.replace(".0","");
-            }
-            return finalResult;
-        } catch (Exception e) {
-            return "Err";
+            result = (double) engine.eval(working);
+        } catch (ScriptException e) {
+            Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
         }
+        if (result != null) {
+            resultTv.setText(String.valueOf(result.doubleValue()));
+            solutionTv.setText(resultTv.getText().toString());//setting calculated value
+            working = solutionTv.getText().toString();//setting calculated value
+        }
+    }
 
+    public void onClickDot(View view) {
+        setWorking(".");
+    }
+
+    public void onClickAddition(View view) {
+        setWorking("+");
+    }
+
+    public void onClickSubtraction(View view) {
+        setWorking("-");
+    }
+
+    public void onClickMultiplication(View view) {
+        setWorking("*");
+    }
+
+    public void onClickDivision(View view) {
+        setWorking("/");
+    }
+
+    public void onClickOpenBracket(View view) {
+        setWorking("(");
+    }
+
+    public void onClickCloseBracket(View view) {
+        setWorking(")");
+    }
+
+    public void onClickAC(View view) {
+        solutionTv.setText("");
+        working = solutionTv.getText().toString();
+        resultTv.setText("0");
+    }
+
+    public void onClickClear(View view) {
+        String display = solutionTv.getText().toString();
+        if (!display.equals("")) {
+            display = display.substring(0, display.length() - 1);
+            solutionTv.setText(display);
+            working = solutionTv.getText().toString();
+        }
     }
 }
