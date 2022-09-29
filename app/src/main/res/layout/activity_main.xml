@@ -23,7 +23,6 @@
         app:strokeColor="#040404"
         app:strokeWidth="0.1dp" />
 
-
     <TextView
         android:id="@+id/result_tv"
         android:layout_width="match_parent"
@@ -52,7 +51,6 @@
             android:layout_height="80dp"
             android:gravity="center"
             android:orientation="horizontal">
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_c"
@@ -115,7 +113,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_7"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
@@ -177,7 +174,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_4"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
@@ -204,7 +200,6 @@
                 app:strokeColor="#040404"
                 app:strokeWidth="0.1dp" />
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_6"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
@@ -217,7 +212,6 @@
                 android:textSize="30dp"
                 app:strokeColor="#040404"
                 app:strokeWidth="0.1dp" />
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_minus"
@@ -233,7 +227,6 @@
                 app:strokeColor="#040404"
                 app:strokeWidth="0.1dp" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -241,7 +234,6 @@
             android:layout_height="80dp"
             android:gravity="center"
             android:orientation="horizontal">
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_1"
@@ -255,7 +247,6 @@
                 android:textSize="30dp"
                 app:strokeColor="#040404"
                 app:strokeWidth="0.1dp" />
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_2"
@@ -305,7 +296,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_ac"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
@@ -345,7 +335,6 @@
                 app:strokeColor="#040404"
                 app:strokeWidth="0.1dp" />
 
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_equal"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
@@ -358,7 +347,6 @@
                 android:textSize="30dp"
                 app:strokeColor="#040404"
                 app:strokeWidth="0.1dp" />
-
 
         </LinearLayout>
 
