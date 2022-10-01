@@ -2,6 +2,9 @@ package com.gp.calculator;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +18,7 @@ import javax.script.ScriptException;
 public class MainActivity extends AppCompatActivity {
     String working = "";
     TextView resultTv, solutionTv;
+    Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +26,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         resultTv = findViewById(R.id.result_tv);
         solutionTv = findViewById(R.id.solution_tv);
+        button1 = (Button) findViewById(R.id.button_1);
+        button2 = (Button) findViewById(R.id.button_2);
+        button3 = (Button) findViewById(R.id.button_3);
+        button4 = (Button) findViewById(R.id.button_4);
+        button5 = (Button) findViewById(R.id.button_5);
+        button6 = (Button) findViewById(R.id.button_6);
+        button7 = (Button) findViewById(R.id.button_7);
+        button8 = (Button) findViewById(R.id.button_8);
+        button9 = (Button) findViewById(R.id.button_9);
+        button0 = (Button) findViewById(R.id.button_zero);
     }
 
     private void setWorking(String enteredValue) {
         working = working + enteredValue;
         solutionTv.setText(working);
+        stopButtonAnimation();
     }
 
     public void onClickOne(View view) {
@@ -88,11 +103,19 @@ public class MainActivity extends AppCompatActivity {
                     result = (double) engine.eval(working);
                 }
             } else {
-                result = (double) engine.eval(working);
+                try {
+                    result = (double) engine.eval(working);
+                } catch (NullPointerException n) {
+                    setWorking("=");
+                    Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+                    animationOfButton("=");
+                    working = "";
+                }
             }
         } catch (ScriptException e) {
             Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
         }
+
         if (result != null) {
             resultTv.setText(String.valueOf(result.doubleValue()));
             solutionTv.setText(resultTv.getText().toString());//setting calculated value
@@ -143,6 +166,62 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickSquareRoot(View view) {
+        //setWorking("√");
+        try {
+            working = String.valueOf(Math.sqrt(convertStringToDouble(working)));
+            resultTv.setText(working);
+        } catch (Exception E) {
+            setWorking("√");
+            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            animationOfButton("√");
+            working = "";
+        }
+    }
+
+    public void onClickSquare(View view) {
+        //setWorking("²");
+        try {
+            working = String.valueOf((convertStringToDouble(working)) * (convertStringToDouble(working)));
+            resultTv.setText(working);
+        } catch (Exception E) {
+            setWorking("²");
+            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            animationOfButton("²");
+            working = "";
+        }
+    }
+
+    public void onClickFactorial(View view) {
+        try {
+
+            Double fact = 1d;
+            Double num = convertStringToDouble(working);
+            for (int i = 1; i <= num; i++) {
+                fact = fact * i;
+            }
+            working = String.valueOf(fact);
+            resultTv.setText(working);
+        } catch (Exception E) {
+            setWorking("!");
+            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            animationOfButton("!");
+            working = "";
+        }
+    }
+
+    public void onClickPercentage(View view) {
+        try {
+            working = String.valueOf(convertStringToDouble(working) / 100);
+            resultTv.setText(working);
+        } catch (Exception E) {
+            setWorking("%");
+            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            animationOfButton("%");
+            working = "";
+        }
+    }
+
     private void replaceOpenBracketByStar() {
         working = working.replaceAll("\\(", "*");
     }
@@ -151,8 +230,47 @@ public class MainActivity extends AppCompatActivity {
         working = working.replaceAll("\\)", "*");
     }
 
-    private void replaceClosedBracketByBlankSpace()
-    {
+    private void replaceClosedBracketByBlankSpace() {
         working = working.replace(")", "");
+    }
+
+    /**
+     * It will return double
+     **/
+    private Double convertStringToDouble(String numValue) {
+        return Double.parseDouble(numValue);
+    }
+
+    private void animationOfButton(String enteredValue) {
+        if (working.startsWith(enteredValue)) {
+            Animation anim = new AlphaAnimation(0.5f, 1.0f);
+            anim.setDuration(1000); //You can manage the blinking time with this parameter
+            anim.setStartOffset(20);
+            anim.setDuration(100);
+            anim.setRepeatCount(Animation.INFINITE);
+            button1.startAnimation(anim);
+            button2.startAnimation(anim);
+            button3.startAnimation(anim);
+            button4.startAnimation(anim);
+            button5.startAnimation(anim);
+            button6.startAnimation(anim);
+            button7.startAnimation(anim);
+            button8.startAnimation(anim);
+            button9.startAnimation(anim);
+            button0.startAnimation(anim);
+        }
+    }
+
+    private void stopButtonAnimation() {
+        button1.clearAnimation();
+        button2.clearAnimation();
+        button3.clearAnimation();
+        button4.clearAnimation();
+        button5.clearAnimation();
+        button6.clearAnimation();
+        button7.clearAnimation();
+        button8.clearAnimation();
+        button9.clearAnimation();
+        button0.clearAnimation();
     }
 }
