@@ -1,5 +1,6 @@
 package com.gp.calculator;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     String working = "";
     TextView resultTv, solutionTv;
     Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0;
+    MediaPlayer errorVoice, invalidInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         button8 = (Button) findViewById(R.id.button_8);
         button9 = (Button) findViewById(R.id.button_9);
         button0 = (Button) findViewById(R.id.button_zero);
+
+        errorVoice = MediaPlayer.create(MainActivity.this, R.raw.errorvoice);
+        invalidInput = MediaPlayer.create(MainActivity.this, R.raw.invalidinput);
     }
 
     private void setWorking(String enteredValue) {
@@ -107,13 +112,15 @@ public class MainActivity extends AppCompatActivity {
                     result = (double) engine.eval(working);
                 } catch (NullPointerException n) {
                     setWorking("=");
-                    Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Please enter number to continue...", Toast.LENGTH_SHORT).show();
+                    playErrorVoice(view);
                     animationOfButton("=");
                     working = "";
                 }
             }
         } catch (ScriptException e) {
             Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
+            playInvalidInput();
         }
 
         if (result != null) {
@@ -173,7 +180,8 @@ public class MainActivity extends AppCompatActivity {
             resultTv.setText(working);
         } catch (Exception E) {
             setWorking("√");
-            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter number to continue...", Toast.LENGTH_SHORT).show();
+            playErrorVoice(view);
             animationOfButton("√");
             working = "";
         }
@@ -186,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
             resultTv.setText(working);
         } catch (Exception E) {
             setWorking("²");
-            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter number to continue...", Toast.LENGTH_SHORT).show();
+            playErrorVoice(view);
             animationOfButton("²");
             working = "";
         }
@@ -204,7 +213,8 @@ public class MainActivity extends AppCompatActivity {
             resultTv.setText(working);
         } catch (Exception E) {
             setWorking("!");
-            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter number to continue...", Toast.LENGTH_SHORT).show();
+            playErrorVoice(view);
             animationOfButton("!");
             working = "";
         }
@@ -216,7 +226,8 @@ public class MainActivity extends AppCompatActivity {
             resultTv.setText(working);
         } catch (Exception E) {
             setWorking("%");
-            Toast.makeText(this, "Enter any number first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter number to continue...", Toast.LENGTH_SHORT).show();
+            playErrorVoice(view);
             animationOfButton("%");
             working = "";
         }
@@ -272,5 +283,13 @@ public class MainActivity extends AppCompatActivity {
         button8.clearAnimation();
         button9.clearAnimation();
         button0.clearAnimation();
+    }
+
+    public void playErrorVoice(View view) {
+        errorVoice.start();
+    }
+
+    public void playInvalidInput() {
+        invalidInput.start();
     }
 }
