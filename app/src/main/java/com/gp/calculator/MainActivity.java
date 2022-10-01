@@ -73,7 +73,23 @@ public class MainActivity extends AppCompatActivity {
         Double result = null;
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("rhino");
         try {
-            result = (double) engine.eval(working);
+            if (working.contains("(") && working.endsWith(")")) { //replace "(" by * to do multiplication
+                replaceOpenBracketByStar();
+                replaceClosedBracketByBlankSpace();
+                result = (double) engine.eval(working);
+            } else if (!working.endsWith(")") && working.contains(")")) { //replace ")" by * to do multiplication
+                if (!(working.contains("+") || working.contains("-") || working.contains("/") || working.contains("*"))) {
+                    replaceOpenBracketByStar();
+                    replaceClosedBracketByStar();
+                    result = (double) engine.eval(working);
+                } else {
+                    replaceOpenBracketByStar();
+                    replaceClosedBracketByBlankSpace();
+                    result = (double) engine.eval(working);
+                }
+            } else {
+                result = (double) engine.eval(working);
+            }
         } catch (ScriptException e) {
             Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
         }
@@ -125,5 +141,18 @@ public class MainActivity extends AppCompatActivity {
             solutionTv.setText(display);
             working = solutionTv.getText().toString();
         }
+    }
+
+    private void replaceOpenBracketByStar() {
+        working = working.replaceAll("\\(", "*");
+    }
+
+    private void replaceClosedBracketByStar() {
+        working = working.replaceAll("\\)", "*");
+    }
+
+    private void replaceClosedBracketByBlankSpace()
+    {
+        working = working.replace(")", "");
     }
 }
